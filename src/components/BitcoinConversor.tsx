@@ -8,10 +8,14 @@ const getBitcoinValue = async () => {
     return bitcoinToJson.market_data.current_price.eur
 }
 
+//llamar a la api para traer el valor inicial del bitcoin, antes había un valor fijo y hacía un render con ese y otro con el useEffect de la llamada a la api y se veía feo el cambio.
+let initialBitcoinValue: number
+getBitcoinValue().then(bitcoin => initialBitcoinValue = bitcoin)
+
 const BitcoinConversor: React.FC = () => {
     const [bitcoin, setBitcoin] = useState<number>(1)
     const [euro, setEuro] = useState<number>(1000)
-    const [bitcoinChange, setBitcoinChange] = useState<number>(35000)
+    const [bitcoinChange, setBitcoinChange] = useState<number>(initialBitcoinValue)
 
     useEffect(() => {
         setBitcoin(() => euro / bitcoinChange)
@@ -21,9 +25,9 @@ const BitcoinConversor: React.FC = () => {
         setBitcoinChange(bitcoinValue)
     })
 
-    useEffect(() => {
-        getBtcChange()
-    }, [])
+    // useEffect(() => {
+    //     getBtcChange()
+    // }, [])
 
     return (
         <div>
